@@ -1,4 +1,4 @@
-# 임시
+import sys
 count0 = 0
 count1 = 0
 def fibonacci(n):
@@ -12,6 +12,12 @@ def fibonacci(n):
         return 1
     else:
         return fibonacci(n-1) + fibonacci(n-2)
-a = int(input())
-fibonacci(a)
-print("{0} {1}".format(count0, count1))
+T = int(sys.stdin.readline().rstrip())
+i = 0
+while i < T:
+    a = int(sys.stdin.readline().rstrip())
+    fibonacci(a)
+    print("{0} {1}".format(count0, count1))
+    count0 = 0
+    count1 = 0
+    i += 1
