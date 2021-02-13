@@ -3,62 +3,47 @@ import sys
 T = int(sys.stdin.readline().rstrip())
 i = 0
 
-while i < T:
+for i in range(T):
     N, K = map(int, sys.stdin.readline().rstrip().rsplit())
-    j = 0
-    D = []
-    tree = []
-    D = list(sys.stdin.readline().rstrip().rsplit())
-    while j < K:
-        tree.append(list(sys.stdin.readline().rstrip().split()))
-        j += 1
+    Delay = []
+    routes = [[] for _ in range(K)]
+    dots = [[] for _ in range(K)] #각 건물들이 가르키고 있는 다음 건물
+    cnt = [0] * (K)               #건물들의 진입차수(자신을 가리키는 화살표의 개수)
+    queue = []
+    result = [0] * (K)
+    Delay = list(sys.stdin.readline().rstrip().rsplit())
+
+    for j in range(K):
+        a, b = map(int, sys.stdin.readline().rstrip().split())
+        dots[a-1].append(b)
+        routes[b-1].append(a)
+
     W = int(sys.stdin.readline().rstrip())
-    print(D)
-    print(tree)
-    i += 1
+    
+    for l in range(K):
+        cnt[l] = len(routes[l])
 
+    while True:
+        if cnt[W-1] != 0:
+            for m in range(K):
+                if cnt[m] == 0:
+                    queue.append(m)
+            if len(queue) == 0:
+                break
+            node = queue.pop(0)
+        else:
+            node = W-1
 
-##########################################
+        max_delay = 0
+        for routes_node in routes[node]:
+            if result[routes_node-1] > max_delay:
+                max_delay = result[routes_node-1]
+        result[node] = int(max_delay) + int(Delay[node])
 
+        if node == W:
+            break
 
-
-from collections import deque
-
-N = 6 #점의 개수
-routes = [[1, 2], [2, 3], [4, 3], [5, 3], [6, 5]] # 앞 원소에서 뒷 원소를 향하는 간선들
-dots = [[] for _ in range(N + 1)] #각 점들이 가리키고 있는 점들(후순위에 있는 점들)
-cnt = [0] * (N + 1) #점들의 진입차수
-for route in routes:
-    a, b = route
-    dots[a].append(b)
-    cnt[b] += 1
-
-#스택 이용
-stack = [1, 4, 6]
-answer = []
-while stack:
-    target = stack.pop()
-    answer.append(target)
-    for dot in dots[target]:
-        cnt[dot] -= 1
-        if cnt[dot] == 0:
-            stack.append(dot)
-print(answer)
-#answer = [6, 5, 4, 1, 2, 3]
-
-for route in routes:
-    a, b = route
-    cnt[b] += 1
-
-#큐 이용
-queue = deque([1, 4, 6])
-answer = []
-while queue:
-    target = queue.popleft()
-    answer.append(target)
-    for dot in dots[target]:
-        cnt[dot] -= 1
-        if cnt[dot] == 0:
-            queue.append(dot)
-print(answer)
-#answer = [1, 4, 6, 2, 5, 3]
+        cnt[node] = -1
+        for s in dots[node]:
+            cnt[s-1] -= 1
+    print(result[W-1])
