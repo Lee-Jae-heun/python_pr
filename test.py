@@ -1,5 +1,4 @@
-import pickle
-f = open("test.txt", "wb")
-data = {1: 'python', 2: 'you need'}
-pickle.dump(data, f)
-f.close()
+import sys
+N = int(sys.stdin.readline().rstrip())
+N = str(N)
+print(N[0])
