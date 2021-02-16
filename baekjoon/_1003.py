@@ -16,8 +16,9 @@ T = int(sys.stdin.readline().rstrip())
 i = 0
 while i < T:
     a = int(sys.stdin.readline().rstrip())
-    fibonacci(a)
-    print("{0} {1}".format(count0, count1))
-    count0 = 0
-    count1 = 0
-    i += 1
+    if 0 <= a <= 40:
+        fibonacci(a)
+        print("{0} {1}".format(count0, count1))
+        count0 = 0
+        count1 = 0
+        i += 1
