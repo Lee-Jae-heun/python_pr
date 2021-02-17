@@ -3,18 +3,14 @@ T = int(sys.stdin.readline().rstrip())
 for _ in range(T):
     k = int(sys.stdin.readline().rstrip())
     n = int(sys.stdin.readline().rstrip())
-    stack = 0
-    if n != 1:
-        for i in range(k):
-            cnt = i + 1
-            num = 1
+    apart = [[0 for col in range(15)] for row in range(15)]
+    for i in range(k+1):
+        for j in range(n):
             if i == 0:
-                stack += i*n
+                apart[i][j] = j+1
             else:
-                for l in range(n):
-                    stack += cnt + num
-                    num = cnt + num
-                    cnt += 1
-    else:
-        stack = 1*k
-    print(stack)
+                if j == 0:
+                    apart[i][j] = 1
+                else:
+                    apart[i][j] = apart[i][j-1] + apart[i-1][j]
+    print(apart[k][n-1])
